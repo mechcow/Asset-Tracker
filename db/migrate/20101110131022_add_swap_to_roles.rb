@@ -10,7 +10,7 @@ class AddSwapToRoles < ActiveRecord::Migration
     Role.update_all("required_swap = 512","name = 'base'")
     Role.update_all("required_swap = 4608","name = 'dwh'")
     Role.update_all("required_swap = 4096","name = 'summary'")
-    Asset.update_all("disk_space = 10240","isdom0 = false and parent_id IS NOT NULL")
+   # Asset.update_all("disk_space = 10240","isdom0 = false and parent_id IS NOT NULL")
   end
 
   def self.down

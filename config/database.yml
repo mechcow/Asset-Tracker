@@ -1,12 +1,6 @@
-production:
-  adapter: postgresql
-  database: asset_tracker
-  username: asset_tracker
-  password: asset_tracker
-
 development:
-  adapter: postgresql
-  database: asset_tracker
-  username: asset_tracker
-  password: asset_tracker
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
 

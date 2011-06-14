@@ -28,7 +28,11 @@ class User < ActiveRecord::Base
   def self.create_from_ldap_if_valid(login)
     p "create_from_ldap_if_valid"
     Ldap['ldaphost'].each do |ldaphost|
-      conn = LDAP::SSLConn.new(host=ldaphost, port=Ldap['ldapport'])
+      if Ldap['ldapport'] == 389
+        conn = LDAP::Conn.new(host=ldaphost, port=Ldap['ldapport'])
+      else
+        conn = LDAP::SSLConn.new(host=ldaphost, port=Ldap['ldapport'])
+      end
       begin
         conn.search(Ldap['binddn'] % login, LDAP::LDAP_SCOPE_BASE, '(objectClass=inetOrgPerson)') { |person|
           p person.vals('mail')
@@ -49,7 +53,11 @@ class User < ActiveRecord::Base
 
   def valid_ldap_credentials?(password_plaintext)
     Ldap['ldaphost'].each do |ldaphost|
-      @conn = LDAP::SSLConn.new(host=ldaphost, port=Ldap['ldapport'])
+      if Ldap['ldapport'] == 389
+        @conn = LDAP::Conn.new(host=ldaphost, port=Ldap['ldapport'])
+      else
+        @conn = LDAP::SSLConn.new(host=ldaphost, port=Ldap['ldapport'])
+      end
       p "testing with ldap host %s" % ldaphost
       begin
         if @conn.bind(Ldap['binddn'] % self.login,password_plaintext)

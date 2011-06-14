@@ -1,5 +1,5 @@
 ---
   ldaphost: [192.168.0.224, 192.168.0.225]
-  ldapport: 636
+  ldapport: 389
   binddn: uid=%s,ou=People,dc=thm
   rwgroup: cn=operations,ou=Groups,dc=thm

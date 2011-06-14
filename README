@@ -12,6 +12,11 @@ Features added:
 - CSV Output
 - Asset Polymorphism including Virtualized and Physical hosts
 - IP Address checking to ensure you don't double-allocate IPs
+- LDAP and AuthLogin support
+
+== Dependencies
+
+gems: fastercsv
 
 == Getting Started
 
@@ -26,11 +31,17 @@ ActionMailer::Base.smtp_settings = {
   :password => "chucknorris"
 }
 
-2. rake db:create
-3. rake db:fixtures:load
-4. rake db:migrate
+2. Install and configure PostgreSQL and setup a blank database (exact steps will depend upon your OS and environment)
 
-5. run script/server
+3. Edit config/database.yml and give it the appropriate values to connect to said database
+
+4. rake db:create
+5. rake db:fixtures:load
+6. rake db:migrate
+
+7. Edit config/ldap.yml and fill in the details about your LDAP server
+
+8. run script/server
 
 You probably now want to first add a Location before you add anything else.
 
