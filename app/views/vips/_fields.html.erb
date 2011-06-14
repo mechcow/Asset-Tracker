@@ -1,0 +1,27 @@
+<div class="field">
+	<label>IP Address</label>
+  <%= f.text_field :ipaddr,:class => 'autocomplete test-if-used', 'autocomplete-url' => autocomplete_for_interface_ip_interfaces_path,'test-if-used-url' => test_if_used_interfaces_path %>
+	<%= error_message_on :vip, :ipaddr %>
+  <div id="ipaddr_warning" class="warning"></div>
+</div>
+
+<div class="field">
+	<label>Puppet variable name</label>
+	<%= f.text_field :puppet_variable_name %>
+	<%= error_message_on :vip, :puppet_varible_name %>
+</div>
+
+<div class="field">
+	<label>Description (Optional)</label>
+	<%= f.text_field :description %>
+	<%= error_message_on :vip, :description %>
+</div>
+
+<div class="field">
+	<label>Location</label>
+	<%= select :vip, :location_id, Location.find(:all).collect {|n| [ h(n.name), n.id ] }.sort %>
+	<%= link_to image_tag('/images/icons/add.png'), new_location_path, :target => '_blank' %>
+	<%= error_message_on :vip, :location %>
+</div>
+
+

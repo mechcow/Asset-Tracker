@@ -1,0 +1,40 @@
+== About 
+
+This is a ruby on rails asset tracker which is a fork of Preston Lee's asset tracker:
+
+https://github.com/preston/asset_tracker
+
+Features added:
+
+- JQuery AJAX style searching
+- Puppet synchronization
+- Cobbler synchronization
+- CSV Output
+- Asset Polymorphism including Virtualized and Physical hosts
+- IP Address checking to ensure you don't double-allocate IPs
+
+== Getting Started
+
+1. Create a config/initializers/email.rb with the following...
+
+ActionMailer::Base.smtp_settings = {
+  :address => "smtp.gmail.com",
+  :port => 587,
+  :authentication => :plain,
+  :enable_starttls_auto => true,
+  :user_name => "noreply@gmail_or_your_google_domain.com",
+  :password => "chucknorris"
+}
+
+2. rake db:create
+3. rake db:fixtures:load
+4. rake db:migrate
+
+5. run script/server
+
+You probably now want to first add a Location before you add anything else.
+
+== Authors
+
+Original author was Preston Lee: http://www.prestonlee.com/2009/01/14/asset-tracking-ruby-web-app/
+Modified and adapted by Joel Heenan, Giorgio Mandolfo and Sanyu Melwani for ThreatMetrix. 

@@ -1,0 +1,9 @@
+<div style="clear:both;">
+<table>
+<h2>Everything being tracked.</h2>
+<%= render :partial => 'assets/table_header' %>
+<tbody id="assets">
+ <%= render :partial => 'assets/asset',:collection => @assets %>
+</tbody>
+</table>
+</div>

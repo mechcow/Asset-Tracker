@@ -1,0 +1,11 @@
+<h1><%= @title = 'Add Model' %></h1>
+
+<% form_for(@model) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <p>
+    <%= button_submit %>
+  </p>
+<% end %>

@@ -1,0 +1,12 @@
+<h1><%= @title = 'Add equipment type.' %></h1>
+
+<% form_for(@vip) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <p>
+    <%= button_submit %>
+  </p>
+<% end %>
+

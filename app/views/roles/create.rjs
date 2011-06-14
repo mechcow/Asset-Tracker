@@ -1,0 +1,5 @@
+html = render(:partial => 'roles/row', :locals => {:role => @role})
+id = "role_" + @role.id.to_s
+page.insert_html :top, 'roles', html
+page.visual_effect :highlight, id
+# page << "alert('hi');"

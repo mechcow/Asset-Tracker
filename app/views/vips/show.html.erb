@@ -1,0 +1,21 @@
+<h1><%= h(@vip.ipaddr) %></h1>
+
+<% if current_user.has_role?("admin") -%>
+<%= link_to image_tag('/images/icons/pencil.png'), edit_vip_path(@vip) %>
+<%= link_to image_tag('/images/icons/bin_closed.png'), @vip, :confirm => 'Are you sure?', :method => :delete %>
+<% end -%>
+
+<table>
+  <tr>
+    <td>IP Address:</td><td><%= @vip.ipaddr %></td>
+  </tr>
+  <tr>
+    <td>Puppet Variable Name:</td><td><%= @vip.puppet_variable_name %></td>
+  </tr>
+  <tr>
+    <td>Description:</td><td><%= @vip.description %></td>
+  </tr>
+  <tr>
+    <td>Location:</td><td><%= @vip.location.name %></td>
+  </tr>
+</table>

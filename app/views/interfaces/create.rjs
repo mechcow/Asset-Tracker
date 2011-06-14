@@ -1,0 +1,9 @@
+html = render(:partial => 'interfaces/row', :locals => {:interface => @interface})
+if not html.empty?
+  id = "interface_" + @interface.id.to_s
+  page.insert_html :top, 'interfaces', html
+  page.visual_effect :highlight, id
+else
+  page.replace_html "errors_for_#{@interface.class.name.underscore}", "Oops! <ul>" + @interface.errors.collect{|k,v| "<li>The #{k} #{v}</li>"}.to_s + "</ul>"
+  page.visual_effect :highlight, "errors_for_#{@interface.class.name.underscore}" 
+end

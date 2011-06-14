@@ -1,0 +1,51 @@
+<div class="machine-interface">
+<% @interface ||= interface %>
+<%= error_div_for @interface %>
+<div class="field">
+    <label>Name (eth0,eth1,...)</label>
+    <%= f.text_field :name %>
+    <%= error_message_on :interface, :name %>
+</div>
+
+<div class="field">
+    <label>IP Address</label>
+    <%= f.text_field :ipaddr, :class => 'autocomplete test-if-used', 'autocomplete-url' => autocomplete_for_interface_ip_interfaces_path, 'test-if-used-url' => test_if_used_interfaces_path %>
+    <%= error_message_on :interface, :ipaddr %>
+    <div id="ipaddr_warning" class="warning field"></div>
+</div>
+
+<div class="field">
+    <label>Netmask</label>
+    <%= f.text_field :netmask%>
+    <%= error_message_on :interface, :netmask%>
+</div>
+
+<div class="field">
+    <label>Tags</label>
+    <%= f.text_field :tag_names, :class => 'autocomplete-with-commas', 'autocomplete-url' => autocomplete_for_tag_name_interfaces_path %>
+</div>
+
+<div class="field">
+    <label>MAC (optional for guest interfaces)</label>
+    <%= f.text_field :mac%>
+    <%= error_message_on :interface, :mac%>
+</div>
+
+<div class="field">
+    <label>Gateway (dom0 only)</label>
+    <%= f.text_field :gateway%>
+    <%= error_message_on :interface, :gateway%>
+</div>
+
+<div class="field">
+    <label>MTU (optional)</label>
+    <%= f.text_field :mtu%>
+    <%= error_message_on :interface, :mtu%>
+</div>
+
+<div class="field">
+    <label>Master</label>
+    <%= f.select :master_id, Interface.find(:all, :conditions => { :machine_id => (@asset ? @asset.id : @interface.machine_id), :master_id => nil } ).collect {|n| [ n.name, n.id ] }.sort, { :include_blank => true } %>
+    <%= error_message_on :interface, :master_id %>
+</div>
+</div>

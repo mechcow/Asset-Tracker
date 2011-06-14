@@ -1,0 +1,9 @@
+<h1><%= h(@user.login) %></h1>
+
+<% if current_user.has_role?("admin") -%>
+<%= link_to image_tag('/images/icons/pencil.png'), edit_user_path(@user) %>
+<%= link_to image_tag('/images/icons/bin_closed.png'), @user, :confirm => 'Are you sure?', :method => :delete %>
+<% end -%>
+
+<%= h(@user.email) %>
+

@@ -1,0 +1,40 @@
+<% fields_for_asset(asset.underscore_name,asset.asset) do |asset_f| %>
+<% @obj = asset.asset %>
+<div class="field">
+  <label>FQDN</label>
+  <%= asset_f.text_field :name %>
+  <%= error_message_on :obj,:name %>
+</div>
+<div class="field">
+	<label>Person</label>
+	<%= asset_f.select :user_id, User.all.collect {|n| [ "#{h(n.login)} <#{h(n.email)}>", n.id ] }.sort %>
+	<%= link_to image_tag('/images/icons/add.png'), new_user_path, :target => '_blank' %>
+	<%= error_message_on :obj,:user_id %>
+</div>
+<div class="field">
+	<label>Model</label>
+  <%= asset_f.select :model_id, Model.all(:include => :manufacturer).collect {|n| [ "#{h n.manufacturer.name} #{h n.name}", n.id ] }.sort %>
+	<%= link_to image_tag('/images/icons/add.png'), new_model_path, :target => '_blank' %>
+	<%= error_message_on :obj, :model %>
+</div>
+<div class="field">
+	<label>Location</label>
+	<%= asset_f.select :location_id, Location.all.collect {|n| [ h(n.name), n.id ] }.sort %>
+	<%= link_to image_tag('/images/icons/add.png'), new_location_path, :target => '_blank' %>
+	<%= error_message_on :obj, :location %>
+</div>
+<div class="field">
+	<label>Tags</label>
+	<%= asset_f.text_field :tag_names, :class => 'autocomplete-with-commas', 'autocomplete-url' => autocomplete_for_tag_name_assets_path %>
+</div>
+<div class="field">
+	<label>Serial</label>
+	<%= asset_f.text_field :serial %>
+	<%= error_message_on :obj, :serial %>
+</div>
+<div class="field">
+	<label>Notes</label>
+	<%= asset_f.text_area :notes %>
+	<%= error_message_on :obj, :notes %>
+</div>
+<% end %>

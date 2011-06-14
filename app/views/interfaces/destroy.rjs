@@ -1,0 +1,2 @@
+id = 'interface_' + @interface.id.to_s
+page.visual_effect :fade, id

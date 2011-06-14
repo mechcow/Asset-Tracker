@@ -1,0 +1,14 @@
+<h1>
+<%= @title = 'Auto-DNS' -%>
+</h1>
+<% form_for(:asset, @asset, :url => dns_asset_path(@asset)) do |f| %>
+
+  <p>Please re-enter your password so that we can auto-add this entry into DNS</p>
+
+  Password: <input name="password" type="password"/>
+
+  <p>
+    <%= button_submit %>
+  </p>
+
+<% end -%>

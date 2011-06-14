@@ -1,0 +1,2 @@
+id = 'role_' + @role.id.to_s
+page.visual_effect :fade, id

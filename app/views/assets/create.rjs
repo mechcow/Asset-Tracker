@@ -1,0 +1,11 @@
+html = render(:partial => 'assets/asset', :object => @asset)
+if not html.empty? and @asset.errors.empty?
+  id = "asset_" + @asset.id.to_s
+  page.insert_html :top, 'assets', html
+  page.visual_effect :highlight, id
+else
+  errors = @asset.errors
+  @asset.asset.errors.each { |att,msg| errors.add(att,msg)}
+  page.replace_html "errors_for_#{@asset.class.name.underscore}", "Oops! <ul>" + errors.collect{|k,v| "<li>The #{k} #{v}</li>"}.to_s + "</ul>"
+  page.visual_effect :highlight, "errors_for_#{@asset.class.name.underscore}" 
+end

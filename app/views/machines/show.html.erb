@@ -1,0 +1,7 @@
+<%= render :partial => 'assets/show_asset_common_header' %>
+<tr>
+<td>RAM: </td>
+<td><%= h(@asset.ram) %></td>
+</tr>
+<%= render :partial => "show_#{@asset.class.to_s.underscore}" %>
+<%= render :partial => 'assets/show_asset_common_footer' %>

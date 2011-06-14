@@ -1,0 +1,14 @@
+<h1><%= @title = 'Edit role.' %></h1>
+
+<% form_for(@role) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <p>
+    <%= button_submit %>
+  </p>
+<% end %>
+
+
+<%= link_to '[all roles]', roles_path %>

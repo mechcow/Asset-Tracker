@@ -1,0 +1,35 @@
+<h1><%= @title = 'Edit ' + h(@kind.name) %></h1>
+
+<% form_for(@kind) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <div>
+    <%= button_submit %>
+  </div>
+<% end %>
+
+
+<h2>All <%= h(@kind.name) %> models.</h2>
+
+<table>
+	<thead>
+  <tr>
+	<td>Manufacturer</td>
+	<td>Model</td>
+	<td>Assets</td>
+  </tr>
+	</thead>
+	<tbody>
+<% for model in @kind.models %>
+  <tr class="<%= cycle 'odd', 'even' %>">
+    <td><%= link_to h(model.manufacturer.name), model.manufacturer %></td>
+    <td><%= link_to h(model.name), model %></td>
+    <td><%= model.assets.count %></td>
+  </tr>
+	</tbody>
+<% end %>
+</table>
+
+<%= link_to '[all models]', models_path %>

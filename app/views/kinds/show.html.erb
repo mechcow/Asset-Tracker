@@ -1,0 +1,22 @@
+<h1><%= h(@kind.name) %> Models</h1>
+
+<% if current_user.has_role?("admin") -%>
+  <%= link_to image_tag('/images/icons/pencil.png'), edit_kind_path(@kind) %>
+  <%= link_to image_tag('/images/icons/bin_closed.png'), @kind, :confirm => 'Are you sure?', :method => :delete %>
+<% end -%>
+
+<table>
+  <tr>
+	<td>Manufacturer</td>
+	<td>Model</td>
+	<td>Assets</td>
+  </tr>
+
+<% for model in @kind.models %>
+  <tr>
+    <td><%= link_to h(model.manufacturer.name), model.manufacturer %></td>
+    <td><%= link_to h(model.name), model %></td>
+    <td><%= model.assets.count %></td>
+  </tr>
+<% end %>
+</table>

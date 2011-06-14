@@ -1,0 +1,58 @@
+
+<% if current_user.has_role?("admin") -%>
+  <%= button_function :id=> "vm_button",:hide => "new_physical_machine_container", :container => 'new_virtual_machine_container', :text_shown => 'VM', :text_hidden => "VM", :class => 'new_button' %>
+  <%= button_function :id=> "phy_button",:hide => "new_virtual_machine_container", :container => 'new_physical_machine_container', :text_shown => 'Machine', :text_hidden => "Machine", :class => 'new_button' %>
+<% end -%>
+
+
+<div class="explanation">
+	<h1><%= @title = 'Assets.'%></h1>
+	<p>An "asset" is a single piece of property put into someone's care, such as a MacBook (model) assigned to Suzie (person) at Headquarters (location). If you know the serial numbers of each instance, you should track them as well to avoid confusion.</p>
+</div>
+
+<%= form_tag( {:action=>"search"}, {:onSubmit=>"Element.show('spinner')"} ) -%>
+  <table>
+  <tr>
+  <td><label for="searchtext"><font size="1"><b>Search:</b></font></label></td>
+  <td><%= text_field_tag :searchtext %></td>
+  <td><%= image_tag('/images/ajax-loader.gif', {:style=>"display:none", :id=>"spinner"}) %></td>
+  </tr>
+  </table>
+</form>
+
+<%= observe_field(:searchtext,
+                  :frequency => 0.5,
+                  :update    => :search_hits,
+                  :loading   => "Element.show('spinner')",
+                  :complete  => "Element.hide('spinner')",
+                  :url       => { :action => :live_search },
+                  :with      => "searching"
+                 ) %>
+
+<div id="new_virtual_machine_container" style="display:none;">
+  <div>
+    <% @asset = VirtualMachine.new_with_asset %>
+    <%= error_div_for @asset %>
+    <% remote_form_for @asset do |f| %>
+      <%= render :partial => 'machines/fields',:locals => {:f => f, :machine => @asset}%>
+		<%= button_submit %>
+	<% end %>
+  </div>
+</div>
+
+<div id="new_physical_machine_container" style="display:none;">
+  <div>
+    <% @asset = PhysicalMachine.new_with_asset %>
+    <%= error_div_for @asset %>
+    <% remote_form_for @asset do |f| %>
+      <%= render :partial => 'machines/fields',:locals => {:f => f, :machine => @asset}%>
+		<%= button_submit %>
+	<% end %>
+  </div>
+</div>
+
+<div id="search_hits">
+  <%= render :partial => 'index_table' %>
+</div>
+
+<p class="count">You have <%= pluralize @assets.size, 'asset' %>.</p>

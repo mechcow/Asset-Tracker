@@ -1,0 +1,36 @@
+<%= button_function :container => 'new_interface_container', :text_shown => 'Add', :text_hidden => "Add", :class => 'new_button' %>
+
+
+<div class="explanation">
+	<h1><%= @title = 'Interfaces.'%></h1>
+	<p>Interfaces are different types of guests that we build, a concept that we use within puppet</p>
+</div>
+
+<div id="new_interface_container" style="display:none">
+  <div>
+    <% remote_form_for @interface do |f| %>
+		<%= render :partial => 'interfaces/fields', :locals => {:f => f} %>
+		<%= button_submit %>
+	<% end %>
+  </div>
+</div>
+
+<h2>All Interfaces</h2>
+
+<table>
+	<thead>
+ 	 <tr>
+      <th>Interface Name</th>
+      <th>Actions</th>
+ 	 </tr>
+	</thead>
+	<tbody id="interfaces">
+<% for interface in @interfaces %>
+	<%= render :partial => 'interfaces/row', :locals => {:interface => interface} %>
+<% end %>
+</tbody>
+
+</table>
+
+<p class="count">You have <%= pluralize @interfaces.size, 'interface' %>.</p>
+

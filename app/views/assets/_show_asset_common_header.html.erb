@@ -1,0 +1,19 @@
+<h1><%= @title = @asset.fqdn %></h1>
+<% if current_user.has_role?("admin") -%>
+<%= link_to image_tag('/images/icons/pencil.png'), edit_polymorphic_path(@asset) %>
+<%= link_to image_tag('/images/icons/bin_closed.png'), @asset, :confirm => 'Are you sure?', :method => :delete %>
+<% end -%>
+<table>
+<tbody>
+<tr>
+	<td>Added By: </td>
+	<td><%= h(@asset.user.login) %></td>
+</tr>
+<tr>
+	<td>Location: </td>
+	<td><%= h(@asset.location.name) %></td>
+</tr>
+<tr>
+	<td>Model</td>
+	<td><%= h(@asset.model.name) %></td>
+</tr>

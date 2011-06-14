@@ -1,0 +1,18 @@
+
+<div>
+    <label>Name</label>
+    <%= f.text_field :name %>
+    <%= error_message_on :role, :name %>
+</div>
+
+<div>
+    <label>Extra Log Size (in GB)</label>
+    <%= f.text_field :extra_log_size %>
+    <%= error_message_on :role, :extra_log_size %>
+</div>
+
+<div>
+    <label>Extra Swap Size (in MB)</label>
+    <%= f.text_field :required_swap %>
+    <%= error_message_on :role, :required_swap %>
+</div>

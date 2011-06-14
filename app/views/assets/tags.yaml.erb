@@ -1,0 +1,6 @@
+<%  @assets.each do |asset| -%>
+<%=   "#{asset.name}:" %>
+<%    asset.tags.each do |t| -%>
+<%=  "  - #{t.name}" -%> 
+<%    end -%> 
+<%  end -%> 

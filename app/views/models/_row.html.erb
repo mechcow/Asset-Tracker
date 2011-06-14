@@ -1,0 +1,12 @@
+  <tr id="model_<%= model.id %>" class="<%= cycle 'odd', 'even' %>">	
+	<td><%= link_to h(model.manufacturer.name), manufacturer_path(model.manufacturer) %></td>
+    <td><%= link_to h(model.name), model_path(model) %></td>
+    <td><%= link_to h(model.kind.name), kind_path(model.kind) %></td>
+	<td><%= link_to model.assets.count, model_path(model) %></td>
+    <td>
+    <% if current_user.has_role?("admin") -%>
+      <%= link_to image_tag('/images/icons/pencil.png'), edit_model_path(model) %>
+      <%= link_to_remote image_tag('/images/icons/bin_closed.png'), :url => model_url(model), :method => :delete, :confirm => "Really delete model?" %>
+    <% end -%>
+    </td>
+  </tr>

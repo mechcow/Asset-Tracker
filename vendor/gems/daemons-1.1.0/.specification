@@ -1,0 +1,110 @@
+--- !ruby/object:Gem::Specification 
+name: daemons
+version: !ruby/object:Gem::Version 
+  hash: 19
+  prerelease: false
+  segments: 
+  - 1
+  - 1
+  - 0
+  version: 1.1.0
+platform: ruby
+authors: 
+- Thomas Uehlinger
+autorequire: daemons
+bindir: bin
+cert_chain: []
+
+date: 2010-06-20 00:00:00 +02:00
+default_executable: 
+dependencies: []
+
+description: "    Daemons provides an easy way to wrap existing ruby scripts (for example a self-written server) \n    to be run as a daemon and to be controlled by simple start/stop/restart commands.\n    \n    You can also call blocks as daemons and control them from the parent or just daemonize the current\n    process.\n    \n    Besides this basic functionality, daemons offers many advanced features like exception \n    backtracing and logging (in case your ruby script crashes) and monitoring and automatic\n    restarting of your processes if they crash.\n"
+email: th.uehlinger@gmx.ch
+executables: []
+
+extensions: []
+
+extra_rdoc_files: 
+- README
+- Releases
+- TODO
+files: 
+- Rakefile
+- Releases
+- TODO
+- README
+- LICENSE
+- setup.rb
+- lib/daemons.rb
+- lib/daemons/monitor.rb
+- lib/daemons/application_group.rb
+- lib/daemons/etc_extension.rb
+- lib/daemons/daemonize.rb
+- lib/daemons/cmdline.rb
+- lib/daemons/controller.rb
+- lib/daemons/change_privilege.rb
+- lib/daemons/application.rb
+- lib/daemons/pidmem.rb
+- lib/daemons/pid.rb
+- lib/daemons/pidfile.rb
+- lib/daemons/exceptions.rb
+- examples/call/call.rb
+- examples/call/call_monitor.rb
+- examples/run/ctrl_normal.rb
+- examples/run/ctrl_monitor.rb
+- examples/run/ctrl_proc.rb
+- examples/run/ctrl_multiple.rb
+- examples/run/ctrl_optionparser.rb
+- examples/run/myserver.rb
+- examples/run/myserver_hanging.rb
+- examples/run/ctrl_exit.rb
+- examples/run/myserver_crashing.rb
+- examples/run/ctrl_proc_multiple.rb
+- examples/run/ctrl_proc.rb.output
+- examples/run/ctrl_keep_pid_files.rb
+- examples/run/ctrl_proc_simple.rb
+- examples/run/ctrl_ontop.rb
+- examples/run/ctrl_crash.rb
+- examples/run/ctrl_exec.rb
+- examples/run/ctrl_hanging.rb
+- examples/run/myserver_crashing.rb.output
+- examples/run/ctrl_proc_multiple.rb.output
+- examples/run/myserver_exiting.rb
+- examples/daemonize/daemonize.rb
+has_rdoc: true
+homepage: http://daemons.rubyforge.org
+licenses: []
+
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  none: false
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
+      version: "0"
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  none: false
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
+      version: "0"
+requirements: []
+
+rubyforge_project: daemons
+rubygems_version: 1.3.7
+signing_key: 
+specification_version: 3
+summary: A toolkit to create and control daemons in different ways
+test_files: []
+

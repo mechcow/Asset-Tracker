@@ -1,0 +1,35 @@
+<div class="field">
+	<label>Name</label>
+	<%= f.text_field :name %>
+	<%= error_message_on :location, :name %>
+</div>
+
+<div class="field">
+  <label>Timezone</label>
+  <%= f.text_field :timezone %>
+  <%= error_message_on :location, :timezone %>
+</div>
+
+<div class="field">
+  <label>DNS</label>
+  <%= f.text_field :dns %>
+  <%= error_message_on :location, :dns %>
+</div>
+
+<div class="field">
+  <label>Puppetmaster IP</label>
+  <%= f.text_field :puppetmaster_ip %>
+  <%= error_message_on :location, :puppetmaster_ip %>
+</div>
+
+<div class="field">
+  <label>Centos Repository IP</label>
+  <%= f.text_field :centos_ip %>
+  <%= error_message_on :location, :centos_ip %>
+</div>
+
+<div class="vifs">
+  <label>Xen Guest Virtual Interfaces (number)</label>
+  <%= f.text_field :vifs %>
+  <%= error_message_on :location, :vifs %>
+</div>

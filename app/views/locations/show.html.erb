@@ -1,0 +1,37 @@
+<h1><%= h(@location.name) %></h1>
+
+<% if current_user.has_role?("admin") -%>
+<%= link_to image_tag('/images/icons/pencil.png'), edit_location_path(@location) %>
+<%= link_to image_tag('/images/icons/bin_closed.png'), @location, :confirm => 'Are you sure?', :method => :delete %>
+<% end -%>
+
+<h2>Assets</h2>
+
+<%= link_to image_tag('/images/icons/add.png'), new_asset_path %>
+
+<table>
+  <tr>
+	<td>Manufacturer</td>
+	<td>Model</td>
+	<td>Kind</td>
+	<td>Serial</td>
+	<td>Notes</td>
+	<td>Actions</td>
+  </tr>
+
+<% for asset in @location.assets.map(&:inventoriable) %>
+  <tr>
+    <td><%= link_to h(asset.model.manufacturer.name), asset.model.manufacturer %></td>
+    <td><%= link_to h(asset.model.name), asset.model %></td>
+    <td><%= link_to h(asset.model.kind.name), asset.model.kind %></td>
+    <td><%= link_to h(asset.serial), asset %></td>
+    <td><%= link_to h(asset.notes), asset %></td>
+    <td>
+    <% if current_user.has_role?("admin") -%>
+      <%= link_to image_tag('/images/icons/pencil.png'), edit_polymorphic_path(asset) %>
+      <%= link_to image_tag('/images/icons/bin_closed.png'), asset, :confirm => 'Are you sure?', :method => :delete %>
+    <% end -%>
+    </td>
+  </tr>
+<% end %>
+</table>

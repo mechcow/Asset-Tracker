@@ -1,0 +1,10 @@
+html = render(:partial => 'vips/row', :locals => {:vip => @vip})
+if not html.empty?
+  id = "vip_" + @vip.id.to_s
+  page.insert_html :top, 'vips', html
+  page.visual_effect :highlight, id
+  # page << "alert('hi');"
+else
+  page.replace_html "errors_for_#{@vip.class.name.underscore}", "Oops! <ul>" + @vip.errors.collect{|k,v| "<li>The #{k} #{v}</li>"}.to_s + "</ul>"
+  page.visual_effect :highlight, "errors_for_#{@vip.class.name.underscore}" 
+end

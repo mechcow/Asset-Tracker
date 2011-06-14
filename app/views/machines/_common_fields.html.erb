@@ -1,0 +1,10 @@
+<div class="field">
+	<label>RAM</label>
+	<%= f.text_field :ram %>
+	<%= error_message_on :asset, :ram %>
+</div>
+<div class="field">
+  <label>Disk Space (MB)</label>
+  <%= f.text_field :disk_space %>
+  <%= error_message_on :asset, :disk_space %>
+</div>

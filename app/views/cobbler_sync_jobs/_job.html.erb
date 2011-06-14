@@ -1,0 +1,10 @@
+<tr id="job<%= job.id %>" class="<%= cycle 'odd', 'even' %>">                                                                                           
+<td><%= link_to h(job_name(job)) %></td>
+<td><%= link_to h(job.priority) %></td>
+<td><%= link_to h(job.attempts) %></td>
+<td><%= link_to h(job.locked_by) %></td>
+<td><%= link_to h(job.last_error) %></td>
+<td><%= link_to h(job.run_at) %></td>
+<td>
+</td>
+</tr>

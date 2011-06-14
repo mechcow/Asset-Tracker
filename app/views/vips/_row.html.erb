@@ -1,0 +1,14 @@
+<% if vip.id -%>
+  <tr id="vip_<%= vip.id %>" class="<%= cycle 'odd', 'even' %>">
+	<td><%= link_to h(vip.ipaddr), vip_path(vip) %></td>
+        <td><%= vip.puppet_variable_name %></td>
+        <td><%= vip.description %></td>
+        <td><%= vip.location.name %></td>
+        <td>
+          <% if current_user.has_role?("admin") -%>
+            <%= link_to image_tag('/images/icons/pencil.png'), edit_vip_path(vip) %>
+            <%= link_to_remote image_tag('/images/icons/bin_closed.png'), :url => vip_url(vip), :method => :delete, :confirm => "Really delete vip?" %>
+          <% end -%>
+        </td>
+  </tr>
+<% end -%>

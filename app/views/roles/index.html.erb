@@ -1,0 +1,38 @@
+<% if current_user.has_role?("admin") -%>
+<%= button_function :container => 'new_role_container', :text_shown => 'Add', :text_hidden => "Add", :class => 'new_button' %>
+<% end -%>
+
+
+<div class="explanation">
+	<h1><%= @title = 'Roles.'%></h1>
+	<p>Roles are different types of guests that we build, a concept that we use within puppet</p>
+</div>
+
+<div id="new_role_container" style="display:none">
+  <div>
+    <% remote_form_for @role do |f| %>
+		<%= render :partial => 'roles/fields', :locals => {:f => f}%>
+		<%= button_submit %>
+	<% end %>
+  </div>
+</div>
+
+<h2>All Roles</h2>
+
+<table>
+	<thead>
+ 	 <tr>
+      <th>Role Name</th>
+      <th>Actions</th>
+ 	 </tr>
+	</thead>
+	<tbody id="roles">
+<% for role in @roles %>
+	<%= render :partial => 'roles/row', :locals => {:role => role} %>
+<% end %>
+</tbody>
+
+</table>
+
+<p class="count">You have <%= pluralize @roles.size, 'role' %>.</p>
+

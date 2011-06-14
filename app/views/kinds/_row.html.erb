@@ -1,0 +1,18 @@
+  <tr id="kind_<%= kind.id %>" class="<%= cycle 'odd', 'even' %>">
+	<td><%= link_to h(kind.name), kind_path(kind) %></td>
+    <td><%= kind.models.count %></td>
+    <td>
+<%    
+    assets = 0
+    kind.models.each do |m|
+      assets += m.assets.count
+    end
+%>
+<%= assets %></td>
+    <td>
+    <% if current_user.has_role?("admin") -%>
+      <%= link_to image_tag('/images/icons/pencil.png'), edit_kind_path(kind) %>
+      <%= link_to_remote image_tag('/images/icons/bin_closed.png'), :url => kind_url(kind), :method => :delete, :confirm => "Really delete asset type?" %>
+    <% end -%>
+    </td>
+  </tr>

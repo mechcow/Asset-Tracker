@@ -1,0 +1,4 @@
+<%= render :partial => 'assets/fields',:locals => { :f=> f,:asset => machine } %>
+<%= render :partial => 'machines/common_fields',:object=> machine , :as=> :machine, :locals => { :f=> f} %>
+<%= render :partial => machine, :locals => {:f => f} %>
+<%= render :partial => 'machines/role_selection',:object=> machine, :as => :machine, :locals => { :f=> f} %>                                                                                                          

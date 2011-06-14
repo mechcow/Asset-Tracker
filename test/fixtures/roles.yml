@@ -1,0 +1,8 @@
+portal:
+  name: portal
+
+policy:
+  name: policy
+
+operations:
+  name: operations

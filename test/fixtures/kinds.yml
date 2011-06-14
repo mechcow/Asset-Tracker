@@ -1,0 +1,15 @@
+laptop:
+  name: Laptop
+
+desktop:
+  name: Desktop
+
+server:
+  name: Server
+
+phone:
+  name: Phone
+
+monitor:
+  name: Monitor
+

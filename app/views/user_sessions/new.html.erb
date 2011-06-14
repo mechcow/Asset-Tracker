@@ -1,0 +1,23 @@
+<h1>Login (LDAP credentials)</h1>
+
+<% form_for @user_session, :url => user_session_path do |f| %>
+  <%= f.error_messages %>
+  <table>
+    <tr>
+      <td><%= f.label :login %></td>
+      <td><%= f.text_field :login %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :password %></td>
+      <td><%= f.password_field :password %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :remember_me %></td>
+      <td><%= f.check_box :remember_me %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.submit "Login" %></td>
+    </tr>
+  </table>
+<% end %>

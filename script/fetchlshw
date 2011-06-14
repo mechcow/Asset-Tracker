@@ -1,0 +1,239 @@
+#!/usr/bin/env ruby
+=begin
+
+SSH to remote host, run lshw and add/append information within asset-tracker
+Requires root access on the remote host
+
+@author Joel Heenan 09/04/2010
+
+$HeadURL: http://svn.syd.int.threatmetrix.com/svn/tm/trunk/ops/asset_tracker/script/fetchlshw $
+$Id: fetchlshw 27647 2011-02-11 17:12:47Z smelwani $
+
+=end
+
+# see http://stackoverflow.com/questions/293302/how-do-i-run-ruby-tasks-that-use-my-rails-models
+require File.dirname(__FILE__) + '/../config/environment'
+require 'rubygems'
+require 'net/ssh/telnet'
+require 'logger'
+require 'pp'
+require 'rexml/document'
+require 'etc'
+require 'highline/import'
+include REXML
+
+$LSHW_CMD = "/usr/sbin/lshw -xml -quiet"
+
+def fetch_lshw_xml(host,log,username,password)
+  session = Net::SSH::Telnet.new(
+    #"Dump_log" => "/dev/stdout",
+    "Host"     => host,
+    "Username" => username
+    )
+  session.puts("sudo su -")
+  session.waitfor(/(assword:|#{username}:|\$|\#)/)
+  session.puts(password)
+  session.waitfor(/\#/)
+  session.cmd("rpm -q lshw || yum -y --enablerepo=rpmforge install lshw")
+  res = session.cmd($LSHW_CMD)
+  session.close()
+  res = res.split("\n")[1..-2].join("\n") # strip first+last lines
+  return res
+end
+
+def parse_xml(xml,log)
+  res = {}
+  doc = Document.new(xml)
+  root = doc.root
+
+  memory_size = (root.elements["node/node[@id='memory']/size"].text.to_i/1024)
+  res[:ram] = (memory_size/1024)
+
+  total_size = 0
+  disk_types = {}
+  root.each_element('//node[@class="disk"]') do |disk|
+    if disk.attributes["id"].include?("disk")
+      begin
+        total_size += disk.elements["size"].text.to_i
+      rescue
+        log.debug("skipping disk because we couldn't determine size")
+        next
+      end
+      gb = disk.elements["size"].text.to_i/1024/1024/1024 #bytes->GB
+      description_size = "%s (%d GB)" % [disk.elements["description"].text, gb]
+      if disk_types.has_key?(description_size)
+        disk_types[description_size] += 1
+      else 
+        disk_types[description_size] = 1
+      end
+    end
+  end
+  res[:disk_space] = (total_size/1024/1024) #bytes->MB
+  res[:disk_type] = ""
+  disk_types.each { |type,count| res[:disk_type] << "%dx%s\n" % [count,type] }
+
+  cpu_types = {}
+  root.each_element('//node[@class="processor"]') do |processor|
+    begin
+      product = processor.elements["product"].text
+    rescue
+      log.debug("skipping processor because it has no product")
+      next
+    end
+    if cpu_types.has_key?(product)
+      cpu_types[product] += 1
+    else
+      cpu_types[product] = 1
+    end
+  end
+  res[:cpu] = ""
+  cpu_types.each { |type,count| res[:cpu] << "%dx%s\n" % [count,type] }
+
+  if root.elements["serial"].nil?
+    res[:serial] = "NOTFOUND"
+    log.debug("Serial not found")
+  else
+    res[:serial] = root.elements["serial"].text
+  end
+
+  res[:model] = root.elements["product"].text
+  res[:manufacturer] = root.elements["vendor"].text
+
+  res
+end
+
+# find entry in the database and modify it if it exists, otherwise add new
+def add_or_modify_entry(host,params,login,location_string,log)
+  user = User.find( :first, :conditions => { :login => login } )
+  if user.nil?
+    log.error("User %s not found, bailing out" % login)
+    return false
+  end
+  
+  location = Location.find( :first, :conditions => { :name => location_string } )
+  if location.nil?
+    log.info("No location %s found, creating new..." % location_string)
+    location = Location.new({ :name => location_string })
+    if not location.save
+      log.error("Could not save location, %s" % location.errors.full_messages.join(", "))
+      return false
+    end
+  end
+
+  model = Model.find( :first, :conditions => { :name => params[:model] } )
+  if model.nil?
+    log.info("No model %s found, creating new..." % params[:model])
+    manufacturer = Manufacturer.find( :first, :conditions => { :name => params[:manufacturer] } )
+    if manufacturer.nil?
+      log.info("No manufacturer %s found, creating new..." % params[:manufacturer])
+      manufacturer = Manufacturer.new( { :name => params[:manufacturer] } )
+      manufacturer.save
+      if not manufacturer.save
+        log.error("Could not save manufacturer, %s" % manufacturer.errors.full_messages.join(", "))
+        return false
+      end
+    end
+
+    #TODO: hardcoded Server here, possibly should be an option
+    kind = Kind.find( :first, :conditions => { :name => "Server" } )
+    if not kind
+      log.info("Could not find \"Server\" asset type, adding it...")
+      kind = Kind.new( { :name => "Server" } )
+      kind.save
+    end
+
+    model = Model.new( { :name => params[:model], :kind => kind, :manufacturer => manufacturer } )
+    model.save
+    if not model.save
+      log.error("Could not save model, %s" % model.errors.full_messages.join(", "))
+      return false
+    end
+  end
+
+  params.delete(:model)
+  params.delete(:manufacturer)
+  params.delete(:user)
+
+  asset = PhysicalMachine.find( :first,:joins => :asset, :conditions => { :assets => { :name => host } } )
+  if asset.nil? 
+    log.info("No asset %s found, creating new..." % host)
+    asset = PhysicalMachine.new
+    asset.build_asset
+    asset.attributes = params
+    asset.user = user
+    asset.model = model
+    asset.location = location
+    if not asset.save
+      log.error("Could not save asset, %s" % asset.errors.full_messages.join(", "))
+      return false
+    end
+  else
+    log.info("Updating existing asset %s..." % host)
+    if not asset.update_attributes(params)
+      log.error("Could not update asset, %s" % asset.errors.full_messages.join(", "))
+      return false
+    end
+  end
+
+  true
+end
+
+def parse_opts(argv)
+  options = {}
+
+  opts = OptionParser.new do |opts|
+    opts.banner = "fetchlshw [-u USER] -l LOCATION <fqdn>"
+    opts.on("-u", "--username USERNAME", "LDAP Username") do |u|
+      options[:username] = u
+    end
+    opts.on("-l", "--location LOCATION", "Server Location") do |l|
+      options[:location] = l
+    end
+  end
+
+  argv = opts.parse!(argv)
+  return options,opts,argv
+end
+
+def get_password(prompt="Enter Password")
+  ask(prompt) {|q| q.echo = false}
+end
+
+def main
+  options,opts,argv = parse_opts(ARGV)
+
+  host = argv[-1]
+
+  if host.nil?
+    puts "Error: host is missing"
+    puts opts
+    exit 1
+  end
+
+  if( not host.include?(".") )
+    puts "Please specify %s in fqdn format" % host
+    puts opts
+    exit 1
+  end
+
+  if not options[:username]
+    options[:username] = Etc.getlogin
+  end
+
+  log = Logger.new(STDOUT)
+
+  options[:password] = get_password("Enter LDAP password: ") 
+
+  log.info("Fetching XML data from host (be aware this can take awhile if lshw needs to be installed)...")
+  xml = fetch_lshw_xml(host,log,options[:username],options[:password])
+  log.info("Parsing XML data...")
+  params = parse_xml(xml,log)
+  params[:fqdn] = host
+  log.info("Adding/modifying database entry...")
+  add_or_modify_entry(host,params,options[:username],options[:location],log)
+  log.info("All complete.")
+  exit 0
+end
+
+main
+

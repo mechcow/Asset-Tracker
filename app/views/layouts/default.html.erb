@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Asset Tracker <%= " :: #{h(@title)}" if @title %></title>
+  <%= stylesheet_link_tag 'reset', 'default' %>
+  <%= stylesheet_link_tag 'swapselect' %>
+  <%= stylesheet_link_tag 'jquery-ui-1.8.8.custom' %>
+  <%= javascript_include_tag "prototype","effects","dragdrop","controls","swapselect" %>
+  <%= javascript_include_tag "jquery-1.4.4.min.js" %>
+  <%= javascript_include_tag "jquery-ui-1.8.8.custom.min.js" %>
+  <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+  <script> var $j = jQuery.noConflict(); </script>
+  <%= javascript_include_tag "application" %>
+  <%= yield :head %>
+</head>
+<body>
+
+<div id="everything">
+	
+	<div id="title"><%= link_to 'Asset Tracker', '/' %><br/>
+        <% if !current_user %>
+          <%= link_to "Log In", new_user_session_path %> |
+        <% else %>
+          Currently logged in as <%= current_user.login %><br/>
+          <%= link_to "My Account", account_path %> |
+          <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
+        <% end %>
+        <br/>
+        </div>
+	
+	<div id="content_top">&nbsp;</div>
+	
+	<div id="content_middle">
+	
+ 	   <ul id="navigation">	
+ 	   	<li><%= link_to "Assets", assets_path %> 
+                <span style="font-size: small">
+                  (
+                    <%= link_to "XML", assets_path(:format => :xml) %>,
+                    <%= link_to "CSV", assets_path(:format => :csv) %>,
+                    <%= link_to "Puppet", assets_path(:format => :puppet) %>
+                  )
+                </span>
+                </li>
+ 	   	<li><%= link_to "People", users_path %></li>
+ 	   	<li><%= link_to "Models", models_path %></li>
+ 	   	<li><%= link_to "Locations", locations_path %></li>
+ 	   	<li><%= link_to "Manufacturers", manufacturers_path %></li>
+ 	   	<li><%= link_to "Asset Types", kinds_path %></li>
+ 	   	<li><%= link_to "VIPs", vips_path %></li>
+      <li><%= link_to "Roles", roles_path %></li>
+      <li><%= link_to "Synchronization Jobs", cobbler_sync_jobs_path %></li>
+ 	   </ul>
+ 	
+
+ 	
+ 	   <div id="page">
+		<div id="notice"><%= flash[:notice] %></div>
+		<div id="error"><%= flash[:error] %></div>
+		<%= yield  %>
+ 	   </div>
+ 	   
+ 	   <div id="footer">
+ 	   	<p>Asset Tracker © <%= Time.now.year %> <a href="http://www.openrain.com">OpenRain</a>. All rights reserved.</p>
+ 	   	<p>Record asset metadata with this application for insurance purposes and operational sanity.</p>
+ 	   </div>
+	</div>
+	<div id="content_bottom">&nbsp;</div>
+	
+</div>
+
+</body>
+</html>

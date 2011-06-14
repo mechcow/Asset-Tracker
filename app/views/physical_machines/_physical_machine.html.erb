@@ -1,0 +1,20 @@
+<div class="field">
+	<label>CPU</label>
+	<%= f.text_field :cpu %>
+	<%= error_message_on :asset, :cpu %>
+</div>
+<div class="field">
+  <label>Dom0</label>
+  <%= f.check_box :isdom0 %>
+  <%= error_message_on :asset, :isdom0 %>
+</div>
+<div class="field">
+  <label>Disk Type (free text)</label>
+  <%= f.text_field :disk_type %>
+  <%= error_message_on :asset, :disk_type %>
+</div>
+<div class="field">
+  <label>VGname (optional)</label>
+	<%= f.text_field :vgname %>
+	<%= error_message_on :asset, :vgname %>
+</div>

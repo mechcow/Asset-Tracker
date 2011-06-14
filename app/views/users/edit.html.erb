@@ -1,0 +1,20 @@
+<h1><%= @title = h(@user.login) %></h1>
+
+<% form_for(@user) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <p>
+    <%= button_submit %>
+  </p>
+<% end %>
+
+<h2>Assets that <%= h(@user.login) %> is responsible for.</h2>
+
+<table>
+  <%= render :partial => 'assets/table_header' %>
+	<tbody>
+    <%= render :partial => 'assets/asset',:collection => @user.assets, :as=> :asset %>
+	</tbody>
+</table>

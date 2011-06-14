@@ -1,0 +1,13 @@
+<div style="clear:both;">                                                                                                                                    
+  <% form_tag cobbler_sync_jobs_path do  %>
+    <div> <%= submit_tag "Synchronize"  %> </div>
+  <% end %>
+<table>
+<h2>Pending Jobs</h2>
+<%= render :partial => 'table_header' %>
+<tbody id="jobs">
+<%= render :partial => 'job', :collection=>@jobs %>
+</tbody>
+</table>
+</div>
+

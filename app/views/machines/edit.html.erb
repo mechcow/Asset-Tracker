@@ -1,0 +1,29 @@
+<h1>
+<% if @asset_old -%>
+  <%= @title = 'Edit asset. (Cloned from %s)' % h(@asset_old.name) %>
+<% else -%>
+  <%= @title = 'Edit asset.' %>
+<% end -%>
+</h1>
+<% form_for(@asset) do |f| %>
+<%= f.error_messages %>
+<%= render :partial => 'machines/fields' ,:locals => { :f=> f , :machine => @asset} %>
+<div id="interfaces" style="clear:both;">
+<h2>Interfaces</h2>
+<table>
+<%= render :partial => 'interfaces/row_header' %>
+<%= render :partial => @asset.interfaces.reject(&:new_record?) %>
+</table>
+</div>
+<p>
+  <%= button_function :container => 'new_interface_container', :text_shown => 'Add If', :text_hidden => "Add If", :class => 'new_button' %>
+</p>
+<% @interfaces = get_interfaces(@asset)%>
+<div id="new_interface_container" style="display:<%= css_display(@interfaces) %>; height: 100px;">
+<%= render :partial => 'machines/interface', :collection => @interfaces, :locals => { :type => @asset.underscore_name} %>
+</div>
+<p>
+<%= button_submit %>
+</p>
+<%= link_to '[all assets]', assets_path %>
+<% end %>

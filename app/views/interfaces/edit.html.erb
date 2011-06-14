@@ -1,0 +1,18 @@
+<h1><%= @title = 'Edit interface ' + h(@interface.name) %></h1>
+
+<h2>Belongs to <%= link_to h(@interface.machine.fqdn), edit_polymorphic_path(@interface.machine) %></h2>
+
+<% form_for(@interface) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <p>
+    <%= button_submit %>
+  </p>
+<% end %>
+
+<div style="clear:both;">
+<%= link_to '[all interfaces]', interfaces_path %>
+</div>
+

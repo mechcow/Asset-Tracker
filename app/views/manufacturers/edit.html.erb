@@ -1,0 +1,16 @@
+<h1><%= @title = 'Edit ' + h(@manufacturer.name) %></h1>
+
+<% form_for(@manufacturer) do |f| %>
+  <%= f.error_messages %>
+
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <p>
+    <%= button_submit %>
+  </p>
+<% end %>
+
+
+
+<%= link_to '[all manufacturers]', manufacturers_path %>

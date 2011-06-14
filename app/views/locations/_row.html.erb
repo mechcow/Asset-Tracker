@@ -1,0 +1,14 @@
+<% if location.id -%>
+  <tr id="location_<%= location.id %>" class="<%= cycle 'odd', 'even' %>">
+    <td><%= link_to h(location.name), location_path(location) %></td>
+    <td><%= link_to h(location.timezone), location_path(location) %></td>
+    <td><%= link_to h(location.dns), location_path(location) %></td>
+    <td><%= location.assets.count %></td>
+    <td>
+    <% if current_user.has_role?("admin") -%>
+	<%= link_to image_tag('/images/icons/pencil.png'), edit_location_path(location) %>
+        <%= link_to_remote image_tag('/images/icons/bin_closed.png'), :url => location_url(location), :method => :delete, :confirm => "Really delete location?" %>
+    <% end -%>
+    </td>
+  </tr>
+<% end -%>

@@ -1,0 +1,13 @@
+<h1><%= @title = 'Edit ' + h(@vip.ipaddr) %></h1>
+
+<% form_for(@vip) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'fields', :locals => {:f => f} %>
+
+  <div>
+    <%= button_submit %>
+  </div>
+<% end %>
+
+<%= link_to '[all models]', models_path %>

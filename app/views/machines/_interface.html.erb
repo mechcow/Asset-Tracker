@@ -1,0 +1,4 @@
+<% fields_for_interface(type,interface) do |interface_form| %>
+  <%= render :partial => 'interfaces/fields', :locals => {:f => interface_form, :interface => interface} %>
+  <%#= link_to_function "remove", "$(this).up('.task').remove()" %>
+<% end %>

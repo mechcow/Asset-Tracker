@@ -1,0 +1,17 @@
+<% if asset.id -%>
+<tr id="asset_<%= asset.id %>" class="<%= cycle 'odd', 'even' %>">
+  <td><%= link_to h(asset.fqdn), polymorphic_path(asset) %></td>
+  <td><%= link_to h(asset.model.manufacturer.name), manufacturer_path(asset.model.manufacturer) %></td>
+  <td><%= link_to h(asset.model.name), model_path(asset.model) %></td>
+	<td><%= link_to h(asset.model.kind.name), kind_path(asset.model.kind) %></td>
+	<td><%= link_to h(asset.location.name), location_path(asset.location) %></td>
+  <td><%= link_to h(asset.serial), polymorphic_path(asset) %></td>
+  <td>
+  <% if current_user.has_role?("admin") -%>
+  <%= link_to image_tag('/images/icons/pencil.png'), edit_polymorphic_path(asset) %>
+  <%= link_to image_tag('/images/icons/Clone-Trooper-icon.png'), polymorphic_path([:deep_clone,asset]) %>
+  <%= link_to image_tag('/images/icons/bin_closed.png'),polymorphic_url(asset),:class=>'ajax-destroy' %>
+  <% end -%>
+</td>
+</tr>
+<% end -%>

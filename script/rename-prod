@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+=begin
+
+Rename all c013*-test hosts to c013*-prod
+
+@author Joel Heenan 08/11/2010
+
+$HeadURL: http://svn.syd.int.threatmetrix.com/svn/tm/trunk/ops/asset_tracker/script/rename-prod $
+$Id: rename-prod 25635 2010-11-07 23:42:33Z jheenan $
+
+=end
+
+# see http://stackoverflow.com/questions/293302/how-do-i-run-ruby-tasks-that-use-my-rails-models
+require File.dirname(__FILE__) + '/../config/environment'
+require 'rubygems'
+require 'logger'
+require 'pp'
+require 'rexml/document'
+require 'etc'
+require 'highline/import'
+include REXML
+
+def parse_opts(argv)
+  options = {}
+
+  opts = OptionParser.new do |opts|
+  end
+
+  argv = opts.parse!(argv)
+  return options,opts,argv
+end
+
+def rename_hosts
+  assets = Asset.find(:all, :conditions => ["fqdn LIKE ?", "c013%test%"])
+
+  assets.each do |asset|
+    p asset.fqdn
+    asset.fqdn = asset.fqdn.gsub("test", "prod")
+    p asset.fqdn
+    p asset.save
+  end
+end
+
+def main
+  options,opts,argv = parse_opts(ARGV)
+
+  log = Logger.new(STDOUT)
+
+  log.info("Renaming from test to prod...")
+  rename_hosts
+end
+
+main
+

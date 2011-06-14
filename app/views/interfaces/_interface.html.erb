@@ -1,0 +1,11 @@
+<tr id="interface_<%= interface.id %>" class="<%= cycle 'odd', 'even' %>">
+<td><%= link_to h(interface.name), edit_interface_path(interface.id) %></td>
+<td><%= link_to h(interface.tag_names), edit_interface_path(interface.id) %></td>
+<td><%= link_to h(interface.ipaddr), edit_interface_path(interface.id) %></td>
+<td>
+<% if current_user.has_role?("admin") -%>
+<%=  link_to image_tag('/images/icons/pencil.png'), edit_interface_path(interface) %>
+<%=  link_to_remote image_tag('/images/icons/bin_closed.png'), :url => interface_url(interface), :method => :delete, :confirm => "Really delete interface?" %>
+<% end -%>
+</td>
+</tr>
